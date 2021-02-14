@@ -22,6 +22,16 @@ public class Test {
     combines switch statement with lambda expression and allows switch to return a value
      */
 
+    /*
+    Current JVM has two kinds of switch byte codes: LookupSwitch and TableSwitch.
+    Each case in a switch statement has an integer offset, if these offsets are contiguous (or mostly contiguous with no large gaps) (case 0: case 1: case 2, etc.), then TableSwitch is used.
+    If the offsets are spread out with large gaps (case 0: case 400: case 93748:, etc.), then LookupSwitch is used.
+    The difference, in short, is that TableSwitch is done in constant time because each value within the range of possible values is given a specific byte-code offset. Thus, when you give the statement an offset of 3, it knows to jump ahead 3 to find the correct branch.
+    Lookup switch uses a binary search to find the correct code branch. This runs in O(log n) time, which is still good, but not the best.
+
+    JVM will run JIT optimizations on if statements that will try to place the hottest branch first in the code. This is called "Branch Prediction"
+     */
+
     Day day = Day.WEDNESDAY;
     System.out.println(
         switch (day) {
